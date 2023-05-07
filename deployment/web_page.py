@@ -49,9 +49,9 @@ input_card = dbc.Card(
 
 info_card = dbc.Card(
     [
-        html.Div(['''This an apllication that detect arabic dialect,
-          Enter your arabic dialect end will predict which of these 
-          dialects (EG: Egypt, LB: Lebanon, LY: Libya, MA: Morocco, SD: Sudan) it belongs'''],
+        html.Div(['''Using this application, you can input your Arabic dialect and
+          it will determine which specific dialect of these "Egypt (EG), Lebanon (LB), Libya (LY), Morocco (MA), or Sudan (SD)" 
+          it belongs to.'''],
           style={'font-family': 'IBM Plex Sans Arabic', 'font-size':'28px'}),
     ],
     style={
@@ -87,13 +87,13 @@ prediction_card = dbc.Card(
 
 title_card = dbc.Card(
     [
-        html.H1("Arabic Dialect Prediction-تَحدِّدُ اَللَّهْجَةُ", 
+        html.H1("Arabic Dialect Detection-تَحْدِيدُ اللَّهْجَةِ الْعَرَبِيَّةِ", 
             style={'font-family': 'IBM Plex Sans Arabic', 'font-size':'100px', 'margin-top':'1%'})
     ],
     style={
         "background-color": "#EEEEEE",
-        'padding': '20px',
-        'margin': '20px',
+        'padding': '10px',
+        'margin': '5px',
         'display': 'inline-block',
         'vertical-align': 'top',
         'border': 'none',
