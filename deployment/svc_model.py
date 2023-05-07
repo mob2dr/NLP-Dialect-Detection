@@ -15,8 +15,12 @@ from sklearn.pipeline import Pipeline
 from sklearn.svm import SVC
 import pickle
 
-def dialect_predict(model_path,sentence):
+def load_model(model_path):
   model = pickle.load(open(model_path,"rb"))
+  return model
+
+def dialect_predict(model,sentence):
+
   sentence =[sentence]
   dialect = model.predict(sentence)
 
