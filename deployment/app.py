@@ -16,31 +16,8 @@ from pydantic import BaseModel
 import nltk
 import json
 import numpy as np
-from test_results import predict_ounx
-
-def indexs(x, word2ind):
-    arr = np.empty(len(x))
-    i = 0
-    for word in x:
-        id = word2ind[word]
-        arr[i] = id
-        i+=1
-    return arr
-
-def preaction(text):
-       # Tokenize the text into a list of words
-        text = nltk.word_tokenize(text)
-        with open('deployment\word2ind.txt', 'r') as file:
-            word2ind = json.load(file)
-        text = indexs(text, word2ind)
-        x_test_padded = np.zeros( 24,)
-        x_test_padded[:len(text)] = text
-
-
-        x_test_padded = np.array(x_test_padded,dtype= np.float32)
-
-        return x_test_padded
-
+import svc_model
+from data_preprocessing import preprocess
 def validate_port_number(input):
     while True:
         try:
@@ -51,22 +28,22 @@ def validate_port_number(input):
             return input
 
 app = FastAPI()
-# session = rt.InferenceSession("model.onnx")  # Replace "model.onnx" with the path to your ONNX model
-class Item(BaseModel):
+
+model = svc_model.load_model('./Modeling/SVC_model.pkl')
+
+class Input(BaseModel):
     sentence: str
 
+
 @app.post("/predict")
-async def predict(text: Item):
-    # preprocessed_text = preprocess(text)
-    # inputs = encode(preprocessed_text)
-    # outputs = session.run(None, {"input": inputs})
-    result = preaction(str(text.sentence))
-    result = predict_ounx("deployment\model3.onnx",result.reshape(1,-1))
-    # print(result)
-    # text.sentence+= 'ddd'
+async def predict(text: Input, model=model):
+    text_preprocessed = preprocess(text = str(text.sentence))
+
+    result = svc_model.dialect_predict(model, text_preprocessed)
+
     text.sentence = result
-    print(result)
-    return text#{"predictions": outputs[0].tolist()}
+
+    return text
 
 port_number = validate_port_number(input("Enter Port Number: "))
 
